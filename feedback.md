@@ -7,7 +7,7 @@
 4. [Section 2](#section-2)
 5. [Conclusion](#conclusion) -->
 
-# Feedback | Group 1
+# Feedback | Group 3
 
 ## Milestone 1 | 2Oct-13Oct
 
@@ -80,7 +80,7 @@ Remember you are building a package, like in the Datacamp you must have followin
                 __init__.py
             __init__.py
         setup.py
-        example.py/ipynb (from PackageName import SomeModul)
+        example.py/ipynb (from PackageName import SomeModule)
 
 
 
