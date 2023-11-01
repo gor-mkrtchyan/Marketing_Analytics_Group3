@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+feedback.mk
 # Distribution / packaging
 .Python
 build/
@@ -40,7 +40,7 @@ pip-delete-this-directory.txt
 htmlcov/
 .tox/
 .nox/
-.coverage
+.coveragegit rm --cached feedback.md
 .coverage.*
 .cache
 nosetests.xml
