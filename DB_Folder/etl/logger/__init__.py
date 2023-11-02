@@ -1,4 +1,4 @@
 
-from .logger import CustomFormatter
+from . import logger
 
 
