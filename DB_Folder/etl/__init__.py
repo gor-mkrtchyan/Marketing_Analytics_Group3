@@ -1,4 +1,4 @@
 # importing modules
-from . import logger
-from . import data_preperation
-from . import utils
+from .data_preperation import *
+from .logger import *
+from .utils import *

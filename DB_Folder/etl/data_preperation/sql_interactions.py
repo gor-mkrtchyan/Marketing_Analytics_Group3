@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import numpy as np
 import os
-from .logger import CustomFormatter
+from DB_Folder.etl.logger.logger import CustomFormatter
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)

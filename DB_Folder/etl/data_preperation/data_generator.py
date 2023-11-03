@@ -2,15 +2,12 @@ from faker import Faker
 import pandas as pd
 import random
 import logging
-from ..logger import CustomFormatter
 import os
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
-ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
-
 fake=Faker()
 
 # Data Models
@@ -28,6 +25,7 @@ def generate_customer(customer_id):
     }
 
 from datetime import datetime
+
 def generate_orders(order_id):
     # Generate a random date between a specific date range
     start_date = datetime(2020, 1, 1)
