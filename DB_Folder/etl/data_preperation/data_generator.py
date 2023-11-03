@@ -40,3 +40,4 @@ def generate_orders(order_id):
         "shipping": shipping,
         "total": total
     }
+

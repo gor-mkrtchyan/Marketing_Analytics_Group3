@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import logging
 from DB_Folder.etl.logger.logger import CustomFormatter
+from datetime import datetime
+
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
@@ -82,7 +84,7 @@ class Orders(Base):
 
     order_id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, ForeignKey('customers.customer_id'))
-    order_date = Column(DateTime)
+    order_date = Column(DATE)
     subtotal = Column(Float)
     shipping = Column(Float)
     total = Column(Float)
@@ -92,8 +94,8 @@ class Orders(Base):
 Base.metadata.create_all(engine)
 
 
-'''
-engine = create_engine('sqlite:///temp.db')
+
+
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -105,13 +107,13 @@ def populate_table_from_csv(model, csv_file):
     session.commit()
 
 csv_files = {
-    Customers: 'Data_Folder/customers.csv',
-    Books: 'Data_Folder/books.csv',
-    Publisher: 'Data_Folder/publishers.csv',
-    Authors: 'Data_Folder/authors.csv',
-    Inventory: 'Data_Folder/inventory.csv',
-    OrderItem: 'Data_Folder/orderitem.csv',
-    Orders: 'Data_Folder/orders.csv',
+    Customers: '../../../Data_Folder/customers.csv',
+    Books: '../../../Data_Folder/books.csv',
+    Publisher: '../../../Data_Folder/publishers.csv',
+    Authors: '../../../Data_Folder/authors.csv',
+    Inventory: '../../../Data_Folder/inventory.csv',
+    OrderItem: '../../../Data_Folder/orderitem.csv',
+    Orders: '../../../Data_Folder/orders.csv',
 }
 
 for model, csv_file in csv_files.items():
@@ -119,4 +121,5 @@ for model, csv_file in csv_files.items():
 
 # Close the session when done
 session.close()
-'''
+
+
