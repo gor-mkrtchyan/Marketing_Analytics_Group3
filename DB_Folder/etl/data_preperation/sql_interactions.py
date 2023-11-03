@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import numpy as np
 import os
-from ..logger import CustomFormatter
+from .logger import CustomFormatter
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
@@ -27,8 +27,32 @@ class SqlHandler:
         self.cnxn.close()
         logger.info('the connection has been closed')
 
-    def insert_one()->None:
-        pass
+    def insert_one(self, data: pd.Series) -> None:
+        """
+        Insert a single row of data into the database.
+
+        Args:
+            data (pd.Series): The data to be inserted as a Pandas Series.
+        """
+        # Check if the data Series contains the required columns
+        if not set(data.index).issubset(self.get_table_columns()):
+            logger.error("Data contains columns not present in the database table.")
+            return
+
+        # Ensure all values are non-null
+        data = data.fillna(None)
+
+        # Prepare a tuple for insertion
+        values = tuple(data[column.lower()] for column in self.get_table_columns())
+
+        # Define the SQL query for inserting a single row
+        query = f"INSERT INTO your_table ({', '.join(self.get_table_columns())}) VALUES ({', '.join(['?'] * len(self.get_table_columns()))})"
+
+        # Execute the query
+        cursor = self.connection.cursor()
+        cursor.execute(query, values)
+        self.connection.commit()
+        cursor.close()
 
     def get_table_columns(self)->list:
         self.cursor.execute(f"PRAGMA table_info({self.table_name});")
@@ -133,10 +157,33 @@ class SqlHandler:
 
         return df
 
+    def update_table(self, condition: str, new_data: pd.Series) -> None:
+        """
+        Update rows in the database table based on a specified condition.
 
-    def update_table(self,condition):
-        pass
-        # TODO: complete on your own
+        Args:
+            condition (str): The condition to identify which rows to update (e.g., "column_name = value").
+            new_data (pd.Series): The data to be updated as a Pandas Series.
+        """
+        # Check if the data Series contains the required columns
+        if not set(new_data.index).issubset(self.get_table_columns()):
+            logger.error("Data contains columns not present in the database table.")
+            return
+
+        # Ensure all values are non-null
+        new_data = new_data.fillna(None)
+
+        # Prepare a tuple for insertion
+        values = tuple(new_data[column.lower()] for column in self.get_table_columns())
+
+        # Define the SQL query for updating rows based on the condition
+        query = f"UPDATE {self.table_name} SET {', '.join(f'{col} = ?' for col in self.get_table_columns())} WHERE {condition}"
+
+        # Execute the query
+        cursor = self.cnxn.cursor()
+        cursor.execute(query, values)
+        self.cnxn.commit()
+        cursor.close()
 
    
         
