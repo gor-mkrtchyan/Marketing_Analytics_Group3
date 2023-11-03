@@ -1,9 +1,7 @@
-
-# from ..logger import CustomFormatter
-
-import logging
 import os
-
+import pandas as pd
+import logging
+from DB_Folder.etl.logger.logger import CustomFormatter
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
@@ -12,13 +10,17 @@ ch.setLevel(logging.DEBUG)
 ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
 
-from sqlalchemy import create_engine, Column, Integer, String, Float, Date, ForeignKey
+
+from sqlalchemy import create_engine,Column,Integer,String,Float, DATE, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 
-engine = create_engine('sqlite:///temp.db')
+engine=create_engine('sqlite:///BookStore.db')
+
+from sqlalchemy.orm import declarative_base
 Base = declarative_base()
+
 
 class Customers(Base):
     __tablename__ = "customers"
@@ -80,7 +82,7 @@ class Orders(Base):
 
     order_id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, ForeignKey('customers.customer_id'))
-    order_date = Column(Date)
+    order_date = Column(DateTime)
     subtotal = Column(Float)
     shipping = Column(Float)
     total = Column(Float)
@@ -90,7 +92,7 @@ class Orders(Base):
 Base.metadata.create_all(engine)
 
 
-
+'''
 engine = create_engine('sqlite:///temp.db')
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -117,3 +119,4 @@ for model, csv_file in csv_files.items():
 
 # Close the session when done
 session.close()
+'''
