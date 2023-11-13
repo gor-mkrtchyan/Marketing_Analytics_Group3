@@ -1,0 +1,1 @@
+from bookstore.db.etl.logger import logger

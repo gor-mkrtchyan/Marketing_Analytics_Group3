@@ -1,5 +1,5 @@
 import uvicorn
-from api.api import app
+from bookstore.api.api import app
 
 if __name__ == "__main__":
     uvicorn.run(app)

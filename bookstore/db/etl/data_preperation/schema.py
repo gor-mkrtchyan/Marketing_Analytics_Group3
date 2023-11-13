@@ -1,9 +1,7 @@
 import os
 import pandas as pd
 import logging
-from DB_Folder.etl.logger.logger import CustomFormatter
-from datetime import datetime
-
+from bookstore.db.etl.logger.logger import CustomFormatter
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
@@ -13,10 +11,8 @@ ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
 
 
-from sqlalchemy import create_engine,Column,Integer,String,Float, DATE, DateTime, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine,Column,Integer,String,Float, DATE, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
-from datetime import datetime
 
 engine=create_engine('sqlite:///BookStore.db')
 
@@ -107,13 +103,13 @@ def populate_table_from_csv(model, csv_file):
     session.commit()
 
 csv_files = {
-    Customers: '../../../Data_Folder/customers.csv',
-    Books: '../../../Data_Folder/books.csv',
-    Publisher: '../../../Data_Folder/publishers.csv',
-    Authors: '../../../Data_Folder/authors.csv',
-    Inventory: '../../../Data_Folder/inventory.csv',
-    OrderItem: '../../../Data_Folder/orderitem.csv',
-    Orders: '../../../Data_Folder/orders.csv',
+    Customers: '../../../data/customers.csv',
+    Books: '../../../data/books.csv',
+    Publisher: '../../../data/publishers.csv',
+    Authors: '../../../data/authors.csv',
+    Inventory: '../../../data/inventory.csv',
+    OrderItem: '../../../data/orderitem.csv',
+    Orders: '../../../data/orders.csv',
 }
 
 for model, csv_file in csv_files.items():
