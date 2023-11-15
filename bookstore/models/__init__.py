@@ -1,1 +1,0 @@
-from bookstore.models import *
