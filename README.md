@@ -35,8 +35,9 @@ pip install -r requirements.txt
 - Import CSV files into the `BookStore` database.
 
 4. **Run FastAPI Server:**
+- Make sure you are in the directory bookstore/api
 - Run the following script to open the Swagger : python run.py 
-- After the code is run check the terminalyou will find (http://127.0.0.1:8000 ) press ctrl and right click to open it in the browser.
+- After the code is run check the terminal you will find (http://127.0.0.1:8000 ) press ctrl and right click to open it in the browser.
 - Then next of http://127.0.0.1:8000 add http://127.0.0.1:8000/docs and press enter.
 - GET, POST, PUt available for the books.csv
 
