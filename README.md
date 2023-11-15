@@ -26,7 +26,6 @@ FastAPI is used for an intuitive interface allowing customers and bookstore owne
 ## Getting Started
 
 1. **Clone Repository:**
-# Marketing_Analytics_Group3
 git clone https://github.com/GorMkrtchyan7/Marketing_Analytics_Group3.git
 
 2. **Install Dependencies:**
