@@ -1,13 +1,26 @@
+# api/api/api.py
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from fuzzywuzzy import fuzz
 
+
 app = FastAPI()
 
+
+
+
+import os
+#Get the current script's directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Navigate to the 'data' folder from the 'api' folder
+data_path = os.path.join(script_dir,  'data', 'books.csv')
+books_data = pd.read_csv(data_path)
+
 # Load data
-books_data = pd.read_csv("api/data/books.csv")
+#books_data = pd.read_csv("../api/data/books.csv")
+
 
 class Book(BaseModel):
     title: Optional[str] = None

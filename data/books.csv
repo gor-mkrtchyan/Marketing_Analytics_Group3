@@ -1,4 +1,4 @@
-title,price,isbn,publication_year,language,cover_type,pages_number,book_id,author_id,publisher_id,Genre,Rating
+title,price,isbn,publication_year,language,cover_type,pages_number,book_id,author_id,publisher_id,genre,rating
 Դառը ծովը,5800.0,9789939884943,2023.0,Armenian,Hard,336.0,1,1,1,Non-Fiction,0.5
 Աշխարհի պատմությունը 10½ գլուխներով,5990.0,9789939980256,2023.0,Armenian,Hard,480.0,2,2,2,Science Fiction,2.5
 Ալ տառը,4990.0,9789939980140,2023.0,Armenian,Ultrathin,280.0,3,3,2,Fiction,4.5

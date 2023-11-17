@@ -7,26 +7,16 @@ Author: Group 3
 Date: November 17, 2023
 """
 
-
 import os
 import pandas as pd
 import logging
 from bookstore.db.etl.logger.logger import CustomFormatter
-
-logger = logging.getLogger(os.path.basename(__file__))
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-ch.setFormatter(CustomFormatter())
-logger.addHandler(ch)
-
-
-from sqlalchemy import create_engine,Column,Integer,String,Float, DATE, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Float, DATE, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 # Define the SQLAlchemy engine
-engine=create_engine('sqlite:///BookStore.db')
+engine = create_engine('sqlite:///BookStore.db')
 
 # Create a base class for declarative models
 Base = declarative_base()
@@ -37,7 +27,7 @@ class Customers(Base):
 
     __tablename__ = "customers"
 
-    customer_id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String)
     last_name = Column(String)
     street_address = Column(String)
@@ -59,13 +49,15 @@ class Books(Base):
     language = Column(String)
     cover_type = Column(String)
     pages_number = Column(Integer)
+    genre = Column(String)  # New column
+    rating = Column(Float)   # New column
     author_id = Column(Integer, ForeignKey('authors.author_id'))
     publisher_id = Column(Integer, ForeignKey('publishers.publisher_id'))
 
     author = relationship("Authors")
     publisher = relationship("Publisher")
 
-#Define the Publisher table
+# Define the Publisher table
 class Publisher(Base):
     """Represents the 'publishers' table in the database."""
 
@@ -74,7 +66,7 @@ class Publisher(Base):
     publisher_id = Column(Integer, primary_key=True)
     name = Column(String)
 
-#Define the Authors table
+# Define the Authors table
 class Authors(Base):
     """Represents the 'authors' table in the database."""
 
@@ -83,7 +75,7 @@ class Authors(Base):
     author_id = Column(Integer, primary_key=True)
     full_name = Column(String)
 
-#Define the Inventory table
+# Define the Inventory table
 class Inventory(Base):
     """Represents the 'inventory' table in the database."""
 
@@ -93,7 +85,7 @@ class Inventory(Base):
     stocklevel_used = Column(Integer)
     stocklevel_new = Column(Integer)
 
-#Define the OrderItem table
+# Define the OrderItem table
 class OrderItem(Base):
     """Represents the 'order_items' table in the database."""
 
@@ -104,7 +96,7 @@ class OrderItem(Base):
     quantity = Column(Integer)
     price = Column(Float)
 
-#Define the Orders table
+# Define the Orders table
 class Orders(Base):
     """Represents the 'orders' table in the database."""
 
@@ -145,13 +137,13 @@ def populate_table_from_csv(model, csv_file):
 
 # Define CSV files for each table
 csv_files = {
-    Customers: '../../../data/customers.csv',
-    Books: '../../../data/books.csv',
-    Publisher: '../../../data/publishers.csv',
-    Authors: '../../../data/authors.csv',
-    Inventory: '../../../data/inventory.csv',
-    OrderItem: '../../../data/orderitem.csv',
-    Orders: '../../../data/orders.csv',
+    Customers: '../../../../data/customers.csv',
+    Books: '../../../../data/books.csv',
+    Publisher: '../../../../data/publishers.csv',
+    Authors: '../../../../data/authors.csv',
+    Inventory: '../../../../data/inventory.csv',
+    OrderItem: '../../../../data/orderitem.csv',
+    # Orders: '../../../../data/orders.csv',
 }
 
 # Populate tables with data from CSV files

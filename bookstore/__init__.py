@@ -1,3 +1,6 @@
-from bookstore import api
-from bookstore import db
-from bookstore import models
+
+# bookstore/__init__.py
+#from .api.api.api import app
+#from .api.api import *
+#from .db import *
+#from .models import *
