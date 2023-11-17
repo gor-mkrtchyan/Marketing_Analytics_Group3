@@ -2,6 +2,7 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional
+from fuzzywuzzy import fuzz
 
 app = FastAPI()
 
@@ -26,28 +27,29 @@ def read_root():
 def get_books():
     return books_data.to_dict(orient="records")
 
-@app.get("/books/{book_id}")
-def get_book(book_id: int):
-    book = books_data[books_data["book_id"] == book_id]
-    if book.empty:
+@app.get("/books/{title}")
+def get_book(title: str):
+    matching_books = get_matching_books(title)
+    if matching_books.empty:
         raise HTTPException(status_code=404, detail="Book not found")
-    return book.to_dict(orient="records")[0]
+    return matching_books.to_dict(orient="records")
 
-@app.put("/books/{book_id}")
-def update_book(book_id: int, book: Book):
-    book_index = books_data.index[books_data["book_id"] == book_id]
-    if book_index.empty:
+@app.put("/books/{title}")
+def update_book(title: str, book: Book):
+    matching_books_index = get_matching_books(title).index
+    if matching_books_index.empty:
         raise HTTPException(status_code=404, detail="Book not found")
 
-    book_data = books_data.loc[book_index]
-    for field, value in book.dict(exclude_unset=True).items():
-        if field != "book_id" and value is not None:
-            book_data[field] = value
+    for index in matching_books_index:
+        book_data = books_data.loc[index]
+        for field, value in book.dict(exclude_unset=True).items():
+            if field != "book_id" and value is not None:
+                book_data[field] = value
 
-    books_data.loc[book_index] = book_data
+        books_data.loc[index] = book_data
+
     books_data.to_csv("api/data/books.csv", index=False)
-    return {"book_id": book_id, **book_data.to_dict(orient="records")[0]}
-
+    return {"title": title, **book_data.to_dict(orient="records")[0]}
 
 @app.post("/books/", response_model=Book)
 def create_book(book: Book):
@@ -57,3 +59,7 @@ def create_book(book: Book):
     books_data = books_data.append(book_dict, ignore_index=True)
     books_data.to_csv("api/data/books.csv", index=False)
     return book
+
+def get_matching_books(title: str):
+    threshold = 80  # You can adjust this threshold based on your needs
+    return books_data[books_data["title"].apply(lambda x: fuzz.token_sort_ratio(title, x)) > threshold]
