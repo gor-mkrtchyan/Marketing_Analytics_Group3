@@ -1,3 +1,14 @@
+"""
+sql_interactions.py
+
+This module provides a SqlHandler class for handling SQLite database operations, including insertion, retrieval,
+and updates. It also includes methods for truncating and dropping database tables.
+
+Author: Group 3
+Date: November 17, 2023
+"""
+
+
 import sqlite3
 import logging 
 import pandas as pd
@@ -13,14 +24,24 @@ ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
 
 class SqlHandler:
+    """A class for handling SQLite database operations."""
 
     def __init__(self, dbname:str,table_name:str) -> None:
+        """
+        Initialize the SqlHandler object.
+
+        Args:
+            dbname (str): The name of the SQLite database.
+            table_name (str): The name of the table within the database.
+        """
+
         self.cnxn=sqlite3.connect(f'{dbname}.db')
         self.cursor=self.cnxn.cursor()
         self.dbname=dbname
         self.table_name=table_name
 
     def close_cnxn(self)->None:
+        """Close the database connection."""
 
         logger.info('commiting the changes')
         self.cursor.close()
@@ -28,11 +49,12 @@ class SqlHandler:
         logger.info('the connection has been closed')
 
     def insert_one(self, data: pd.Series) -> None:
-        """
-        Insert a single row of data into the database.
+        """Insert a single row of data into the database.
 
-        Args:
-            data (pd.Series): The data to be inserted as a Pandas Series.
+        :param data: The data to be inserted as a Pandas Series.
+        :type data: pd.Series
+        :param data: pd.Series: 
+
         """
         # Check if the data Series contains the required columns
         if not set(data.index).issubset(self.get_table_columns()):
@@ -55,6 +77,15 @@ class SqlHandler:
         cursor.close()
 
     def get_table_columns(self)->list:
+        """Retrieve the columns of the database table.
+
+
+        :returns: The list of column names.
+
+        :rtype: list
+
+        """
+
         self.cursor.execute(f"PRAGMA table_info({self.table_name});")
         columns = self.cursor.fetchall()
         
@@ -65,14 +96,16 @@ class SqlHandler:
         return column_names
     
     def truncate_table(self)->None:
-        
+        """Truncate the database table."""
+
         query=f"DROP TABLE IF EXISTS {self.table_name};"
         self.cursor.execute(query)
         logging.info(f'the {self.table_name} is truncated')
         # self.cursor.close()
 
     def drop_table(self):
-        
+        """Drop the database table."""
+
         query = f"DROP TABLE IF EXISTS {self.table_name};"
         logging.info(query)
 
@@ -84,7 +117,16 @@ class SqlHandler:
         logger.debug('using drop table function')
 
     def insert_many(self, df:pd.DataFrame) -> str:
-        
+        """Insert multiple rows of data into the database.
+
+        :param df: The DataFrame containing the data to be inserted.
+        :type df: pd.DataFrame
+        :param df:pd.DataFrame: 
+        :returns: A message indicating the status of the data loading.
+        :rtype: str
+
+        """
+
         df=df.replace(np.nan, None) # for handling NULLS
         df.rename(columns=lambda x: x.lower(), inplace=True)
         columns = list(df.columns)
@@ -125,12 +167,18 @@ class SqlHandler:
         
         logger.warning('the data is loaded')
 
-    def from_sql_to_pandas(self, )-> pd.DataFrame:
-        pass
-        #TODO: do it by yourself
 
     def from_sql_to_pandas(self, chunksize:int, id_value:str) -> pd.DataFrame:
-        """
+        """Fetch data from the database to a Pandas DataFrame.
+
+        :param chunksize: The number of rows to fetch in each iteration.
+        :type chunksize: int
+        :param id_value: The column used for ordering and pagination.
+        :type id_value: str
+        :param chunksize:int: 
+        :param id_value:str: 
+        :returns: The concatenated DataFrame containing all fetched data.
+        :rtype: pd.DataFrame
 
         """
         
@@ -158,12 +206,15 @@ class SqlHandler:
         return df
 
     def update_table(self, condition: str, new_data: pd.Series) -> None:
-        """
-        Update rows in the database table based on a specified condition.
+        """Update rows in the database table based on a specified condition.
 
-        Args:
-            condition (str): The condition to identify which rows to update (e.g., "column_name = value").
-            new_data (pd.Series): The data to be updated as a Pandas Series.
+        :param condition: The condition to identify which rows to update (e.g., "column_name = value").
+        :type condition: str
+        :param new_data: The data to be updated as a Pandas Series.
+        :type new_data: pd.Series
+        :param condition: str: 
+        :param new_data: pd.Series: 
+
         """
         # Check if the data Series contains the required columns
         if not set(new_data.index).issubset(self.get_table_columns()):
@@ -186,7 +237,3 @@ class SqlHandler:
         cursor.close()
 
    
-        
-
-
-
