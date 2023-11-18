@@ -10,7 +10,7 @@ Date: November 17, 2023
 import os
 import pandas as pd
 import logging
-#from bookstore.db.etl.logger.logger import CustomFormatter
+from bookstore.db.etl.logger.logger import CustomFormatter
 from sqlalchemy import create_engine, Column, Integer, String, Float, DATE, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
