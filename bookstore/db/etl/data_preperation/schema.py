@@ -10,7 +10,7 @@ Date: November 17, 2023
 import os
 import pandas as pd
 import logging
-from bookstore.db.etl.logger.logger import CustomFormatter
+#from bookstore.db.etl.logger.logger import CustomFormatter
 from sqlalchemy import create_engine, Column, Integer, String, Float, DATE, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -104,7 +104,7 @@ class Orders(Base):
 
     order_id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, ForeignKey('customers.customer_id'))
-    order_date = Column(DATE)
+    order_date = Column(String)
     subtotal = Column(Float)
     shipping = Column(Float)
     total = Column(Float)
@@ -143,7 +143,7 @@ csv_files = {
     Authors: '../../../../data/authors.csv',
     Inventory: '../../../../data/inventory.csv',
     OrderItem: '../../../../data/orderitem.csv',
-    # Orders: '../../../../data/orders.csv',
+    Orders: '../../../../data/orders.csv',
 }
 
 # Populate tables with data from CSV files
