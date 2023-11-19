@@ -14,8 +14,7 @@ import logging
 import pandas as pd
 import numpy as np
 import os
-#from BookStore.db.etl.logger.logger import CustomFormatter
-from bookstore.db.etl.logger import CustomFormatter  # Adjusted import based on init changes
+from bookstore.db.etl.logger import CustomFormatter
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
