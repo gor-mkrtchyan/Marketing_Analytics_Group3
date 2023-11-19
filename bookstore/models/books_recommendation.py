@@ -130,8 +130,15 @@ recommended_titles = cluster_books_df.iloc[top_indices]['title']
 print(recommended_titles)
 
 
-# In[ ]:
+# In[10]:
+try:
+    recommended_titles.to_sql('recommended_titles', conn, if_exists='append', index=False)
+    print("Recommendations saved to the database.")
+except Exception as e:
+    print(f"Error saving recommendations to the database: {e}")
 
+# Close the database connection
+conn.close()
 
 
 
