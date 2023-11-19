@@ -9,5 +9,6 @@
 # from ..api import utils
 # from ..api import api
 
-# bookstore/api/__init__.py
-from .api import app
+#from .api import app
+from .api.api import app
+
